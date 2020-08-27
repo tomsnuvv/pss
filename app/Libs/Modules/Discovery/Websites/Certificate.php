@@ -58,8 +58,7 @@ class Certificate extends Module
             }
             throw $e;
         }
-            throw $e;
-        }
+        
         $this->store($data);
         $this->showOutput();
     }
