@@ -1,12 +1,14 @@
 {
-    "name": "laravel/laravel",
+    "name": "endouble/pss",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "Continious security scanner and asset discovery written in Laravel",
     "keywords": [
-        "framework",
-        "laravel"
+        "security",
+        "scanner",
+        "laravel",
     ],
-    "license": "MIT",
+    "homepage": "https://github.com/Endouble/pss",
+    "license": "BSD-3-Clause",
     "require": {
         "php": "^7.2.5",
         "ext-json": "*",
