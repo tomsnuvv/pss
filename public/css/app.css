@@ -1,0 +1,34 @@
+.text-warning-dark {
+  color: #ffa500;
+}
+
+.badge-default {
+  background-color: #c0c0c0;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.badge-success {
+  background-color: #32cd32;
+}
+
+.badge-info {
+  background-color: #87ceeb;
+}
+
+.badge-warning {
+  background-color: #ffd700;
+}
+
+.badge-warning-dark {
+  background-color: #ffa500;
+}
+
+.badge-danger {
+  background-color: #ff6347;
+}
+
+.badge-danger-dark {
+  background-color: #f00;
+}
+

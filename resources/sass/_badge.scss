@@ -1,0 +1,29 @@
+.badge-default {
+  background-color: $muted;
+  color: $contrast;
+  white-space: nowrap;
+}
+
+.badge-success {
+  background-color: $success;
+}
+
+.badge-info {
+  background-color: $info;
+}
+
+.badge-warning {
+  background-color: $warning;
+}
+
+.badge-warning-dark {
+  background-color: $warning-dark;
+}
+
+.badge-danger {
+  background-color: $danger;
+}
+
+.badge-danger-dark {
+  background-color: $danger-dark;
+}

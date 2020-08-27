@@ -1,0 +1,1 @@
+pv $1 | pigz -dc | grep -E "\.$2\"," | jq -r '.name' > $3
