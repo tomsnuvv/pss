@@ -55,7 +55,7 @@ class Import extends Command
                     $text = strtolower($target->instruction);
 
                     // Extract Github repositories
-                    preg_match_all('#https://github.com/[\d\w-_\.]+\/[\d\w-_\.]+#', $text, $matches);
+                    preg_match_all('#https://github.com/[\w-_\.]+\/[\w-_\.]+#', $text, $matches);
                     if (isset($matches[0]) && !empty($matches[0])) {
                         foreach ($matches[0] as $url) {
                             $this->createRepository($url, $project);
