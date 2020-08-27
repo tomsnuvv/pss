@@ -15,7 +15,7 @@ class CreateHostsTable extends Migration
     {
         Schema::create('hosts', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('key')->nullable()-> default(0);
+            $table->boolean('key')->nullable()->default(0);
             $table->integer('type_id')->nullable()->unsigned();
             $table->string('name')->nullable();
             $table->string('ip')->unique();

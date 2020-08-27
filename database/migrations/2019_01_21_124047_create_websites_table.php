@@ -15,8 +15,8 @@ class CreateWebsitesTable extends Migration
     {
         Schema::create('websites', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('key')->nullable()-> default(0);
-            $table->boolean('crawl')->nullable()-> default(0);
+            $table->boolean('key')->nullable()->default(0);
+            $table->boolean('crawl')->nullable()->default(0);
             $table->string('url')->unique();
             $table->smallInteger('status')->nullable();
             $table->integer('environment_id')->unsigned()->nullable();

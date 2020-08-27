@@ -18,7 +18,7 @@ class CreateRepositoriesTable extends Migration
             $table->string('name')->nullable();
             $table->string('url')->unique();
             $table->string('clone_url')->unique();
-            $table->boolean('public')->nullable()-> default(0);
+            $table->boolean('public')->nullable()->default(0);
             $table->timestamps();
         });
     }
