@@ -25,12 +25,14 @@ class NVD extends Module
     {
         $provider = new Provider();
 
-        for ($year = 2002; $year <= date('Y'); $year++) {
-            $this->output('<info>Downloading ' . $year . ' feed...</info>');
+        if (env('IMPORT_NIST_FULL')) {
+            for ($year = 2002; $year <= date('Y'); $year++) {
+                $this->output('<info>Downloading ' . $year . ' feed...</info>');
 
-            $vulnerabilities = $provider->getVulnerabilities($year);
-            $this->storeVulnerabilities($vulnerabilities);
-            unset($vulnerabilities);
+                $vulnerabilities = $provider->getVulnerabilities($year);
+                $this->storeVulnerabilities($vulnerabilities);
+                unset($vulnerabilities);
+            }
         }
 
         $this->output('<info>Downloading recent feed...</info>');
