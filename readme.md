@@ -8,4 +8,4 @@ With the rapid growing of vulnerabilities and the uncontrollable amount of asset
 #### Overview
 This tool will discover domains, enumerate hosts, perform port scans, identify services and versions, obtain dependencies from repositories, software used in websites, perform audit checks on all those assets, and compare obtained data to up to date vulnerability databases, such as NIST.
 
-For more information, please check the [Documentation](docs/).
+For more information, please check the [Wiki](https://github.com/Endouble/pss/wiki).
