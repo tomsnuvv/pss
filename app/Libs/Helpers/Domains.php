@@ -120,8 +120,9 @@ class Domains
      */
     public static function hasWildcardConfig($domain)
     {
-        $result = dns_get_record('test123securityscanner321test.' . $domain);
+        // It uses @ because of a PHP bug: https://bugs.php.net/bug.php?id=73149
+        $result = @dns_get_record('test123securityscanner321test.' . $domain);
 
-        return ! empty($result);
+        return ! $result || ! empty($result);
     }
 }
