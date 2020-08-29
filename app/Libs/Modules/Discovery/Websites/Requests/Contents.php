@@ -79,19 +79,15 @@ class Contents extends Module
     {
         $this->prepareInput();
 
-        if ($this->environment != 'local' || !Storage::exists($this->outputPath)) {
-            $this->runProcess([env('TOOLS_NODE'), env('TOOLS_CONTENTS'), storage_path('app/' . $this->inputPath)], null, [
-                'APIFY_LOCAL_STORAGE_DIR' => storage_path('app/' . $this->outputPath),
-                'APIFY_HEADLESS' => true,
-            ]);
-        }
+        $this->runProcess([env('TOOLS_NODE'), env('TOOLS_CONTENTS'), storage_path('app/' . $this->inputPath)], null, [
+            'APIFY_LOCAL_STORAGE_DIR' => storage_path('app/' . $this->outputPath),
+            'APIFY_HEADLESS' => true,
+        ]);
 
         $this->store();
 
-        if ($this->environment != 'local') {
-            Storage::delete($this->inputPath);
-            Storage::delete($this->outputPath);
-        }
+        Storage::delete($this->inputPath);
+        Storage::delete($this->outputPath);
 
         $this->showOutput();
     }

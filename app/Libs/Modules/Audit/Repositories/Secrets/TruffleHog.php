@@ -58,20 +58,18 @@ class TruffleHog extends Audit
     public function run()
     {
         // trufflehog -x storage/app/trufflehog_exclude.txt --regex --rules storage/app/trufflehog_rules.json --entropy=False ../colruyt --json > storage/app/trufflehog_output.json
-        if ($this->environment != 'local' || !Storage::exists($this->tmp)) {
-            $output = $this->runProcess([
-                env('TOOLS_TRUFFLEHOG'),
-                '--regex', '--entropy', 'False', '--json',
-                '--exclude_paths', storage_path('app/settings/trufflehog/exclude.txt'),
-                '--rules', storage_path('app/settings/trufflehog/rules.json'),
-                $this->provider->getLocalRepositoryPath(),
-            ], true);
-            Storage::put($this->tmp, $output);
-        }
+        $output = $this->runProcess([
+            env('TOOLS_TRUFFLEHOG'),
+            '--regex', '--entropy', 'False', '--json',
+            '--exclude_paths', storage_path('app/settings/trufflehog/exclude.txt'),
+            '--rules', storage_path('app/settings/trufflehog/rules.json'),
+            $this->provider->getLocalRepositoryPath(),
+        ], true);
+        Storage::put($this->tmp, $output);
+
         $output = Storage::get($this->tmp);
-        if ($this->environment != 'local') {
-            Storage::delete($this->tmp);
-        }
+        Storage::delete($this->tmp);
+        
         // No results
         if (!$output) {
             return;

@@ -56,16 +56,7 @@ class ZoneTransfer extends Audit
     public function run()
     {
         foreach ($this->model->nameservers as $nameserver) {
-            try {
-                $this->results[] = $this->runProcess(['dig', 'axfr', $this->model->name, '@' . $nameserver->name]);
-            } catch (\Exception $e) {
-                if (strstr($e->getMessage(), 'timed out')) {
-                    $this->setMessage('Connection timed out');
-                    continue;
-                } else {
-                    throw $e;
-                }
-            }
+            $this->results[] = $this->runProcess(['dig', 'axfr', $this->model->name, '@' . $nameserver->name]);
         }
 
         $this->audit();

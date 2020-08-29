@@ -62,18 +62,14 @@ class Crawler extends Module
      */
     public function run()
     {
-        if ($this->environment != 'local' || !Storage::exists($this->tmp)) {
-            $this->runProcess([env('TOOLS_NODE'), env('TOOLS_CRAWLER'), $this->model->url, self::MAX], null, [
-                'APIFY_LOCAL_STORAGE_DIR' => storage_path('app/' . $this->tmp),
-                'APIFY_HEADLESS' => true,
-            ]);
-        }
+        $this->runProcess([env('TOOLS_NODE'), env('TOOLS_CRAWLER'), $this->model->url, self::MAX], null, [
+            'APIFY_LOCAL_STORAGE_DIR' => storage_path('app/' . $this->tmp),
+            'APIFY_HEADLESS' => true,
+        ]);
 
         $this->store();
 
-        if ($this->environment != 'local') {
-            Storage::delete($this->tmp);
-        }
+        Storage::delete($this->tmp);
 
         $this->showOutput();
     }

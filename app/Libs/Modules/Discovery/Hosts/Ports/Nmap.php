@@ -58,13 +58,9 @@ class Nmap extends Module
      */
     public function run()
     {
-        if ($this->environment != 'local' || !Storage::exists($this->tmp)) {
-            $this->runProcess(['nmap', '-p', implode(',', self::PORTS), '-Pn', '-sT', '-sV', $this->model->ip, '-oX', storage_path('app/' . $this->tmp)]);
-        }
+        $this->runProcess(['nmap', '-p', implode(',', self::PORTS), '-Pn', '-sT', '-sV', $this->model->ip, '-oX', storage_path('app/' . $this->tmp)]);
         $content = Storage::get($this->tmp);
-        if ($this->environment != 'local') {
-            Storage::delete($this->tmp);
-        }
+        Storage::delete($this->tmp);
         $this->store($content);
         $this->showOutput();
     }

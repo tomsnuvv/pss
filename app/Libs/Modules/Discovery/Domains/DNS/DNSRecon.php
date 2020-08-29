@@ -72,16 +72,12 @@ class DNSRecon extends Module
      */
     public function run()
     {
-        if ($this->environment != 'local' || !Storage::exists($this->tmp)) {
-            $this->runProcess([
-                env('TOOLS_DNSRECON'), '-n', self::DNS, '-t', 'std,axfr', '-d', $this->model->name, '-j',
-                storage_path('app/'.$this->tmp)
-            ], true);
-        }
+        $this->runProcess([
+            env('TOOLS_DNSRECON'), '-n', self::DNS, '-t', 'std,axfr', '-d', $this->model->name, '-j',
+            storage_path('app/'.$this->tmp)
+        ], true);
         $content = Storage::get($this->tmp);
-        if ($this->environment != 'local') {
-            Storage::delete($this->tmp);
-        }
+        Storage::delete($this->tmp);
         $this->store($content);
         $this->showOutput();
     }

@@ -125,20 +125,14 @@ class MassDNS extends Module
      */
     public function run()
     {
-        if ($this->environment != 'local' || !Storage::exists($this->inputPath)) {
-            $this->generateDictionary();
-        }
+        $this->generateDictionary();
 
-        if ($this->environment != 'local' || !Storage::exists($this->outputPath)) {
-            $this->runProcess([env('TOOLS_MASSDNS'), '-r', env('TOOLS_MASSDNS_RESOLVERS'), storage_path('app/' . $this->inputPath),
-            '-s', self::THREADS, '-t', 'A', '-o', 'S', '-w', storage_path('app/' . $this->outputPath)]);
-        }
+        $this->runProcess([env('TOOLS_MASSDNS'), '-r', env('TOOLS_MASSDNS_RESOLVERS'), storage_path('app/' . $this->inputPath),
+        '-s', self::THREADS, '-t', 'A', '-o', 'S', '-w', storage_path('app/' . $this->outputPath)]);
 
         $content = Storage::get($this->outputPath);
-        if ($this->environment != 'local') {
-            Storage::delete($this->inputPath);
-            Storage::delete($this->outputPath);
-        }
+        Storage::delete($this->inputPath);
+        Storage::delete($this->outputPath);
 
         if (!$content) {
             $this->setMessage('Empty output.');

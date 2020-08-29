@@ -112,8 +112,12 @@ abstract class Module implements ModuleInterface
         try {
             $this->run();
         } catch (Exception $e) {
-            $this->outputError($e->getMessage());
-            $this->log->markAsError($e->getMessage());
+            $message = $e->getMessage();
+            if ($this->isAcceptedError($message)) {
+                return;
+            }
+            $this->outputError($message);
+            $this->log->markAsError($message);
             return;
         }
 
@@ -209,6 +213,30 @@ abstract class Module implements ModuleInterface
     public function getCode()
     {
         return str_replace('App\\Libs\\Modules\\', '', get_class($this));
+    }
+
+    /**
+     * Checks if run error is accepted.
+     *
+     * @param  string $message
+     * @return bool
+     */
+    protected function isAcceptedError($message)
+    {
+        if (strstr($message, 'timed out') || strstr($message, 'timeout')) {
+            $this->setMessage('Timed out');
+            return true;
+        }
+        if (strstr($message, 'connection refused')) {
+            $this->setMessage('Connection refused');
+            return true;
+        }
+        if (strstr($message, 'ERR_NAME_NOT_RESOLVED') || strstr($message, 'Name or service not known') || strstr($message, 'No address associated')) {
+            $this->setMessage('Name not resolved');
+            return true;
+        }
+
+        return false;
     }
 
     /**

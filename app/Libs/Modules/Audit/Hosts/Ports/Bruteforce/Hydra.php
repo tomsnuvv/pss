@@ -133,23 +133,21 @@ class Hydra extends Audit
         $target = $this->model->service . '://' . $this->model->host->ip . ':' . $this->model->port;
 
         $this->output('  -  Bruteforcing ' . $target . ' ...');
-        if ($this->environment != 'local' || !Storage::exists($this->tmp)) {
-            // Make sure output is removed, as Hydra appends
-            Storage::delete($this->tmp);
-            $this->runProcess([
-                env('TOOLS_HYDRA'),
-                '-L', storage_path('app/' . $this->wordlistLogin),
-                '-P', storage_path('app/' . $this->wordlistPass),
-                '-q', '-I', '-t', $this->threats,
-                '-o', storage_path('app/' . $this->tmp),
-                $target
-            ]);
-        }
+
+        // Make sure output is removed, as Hydra appends
+        Storage::delete($this->tmp);
+
+        $this->runProcess([
+            env('TOOLS_HYDRA'),
+            '-L', storage_path('app/' . $this->wordlistLogin),
+            '-P', storage_path('app/' . $this->wordlistPass),
+            '-q', '-I', '-t', $this->threats,
+            '-o', storage_path('app/' . $this->tmp),
+            $target
+        ]);
 
         $output = Storage::get($this->tmp);
-        if ($this->environment != 'local') {
-            Storage::delete($this->tmp);
-        }
+        Storage::delete($this->tmp);
 
         $this->store($output);
     }

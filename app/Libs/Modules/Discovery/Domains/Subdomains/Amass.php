@@ -76,18 +76,14 @@ class Amass extends Module
      */
     public function run()
     {
-        if ($this->environment != 'local' || !Storage::exists($this->tmp)) {
-            $this->runProcess([
-                env('TOOLS_AMASS'),
-                'enum', '-active', '-r', implode(',', self::DNS),
-                '-d', $this->model->name,
-                '-o', storage_path('app/' . $this->tmp)
-            ]);
-        }
+        $this->runProcess([
+            env('TOOLS_AMASS'),
+            'enum', '-active', '-r', implode(',', self::DNS),
+            '-d', $this->model->name,
+            '-o', storage_path('app/' . $this->tmp)
+        ]);
         $content = Storage::get($this->tmp);
-        if ($this->environment != 'local') {
-            Storage::delete($this->tmp);
-        }
+        Storage::delete($this->tmp);
         $this->store($content);
     }
 

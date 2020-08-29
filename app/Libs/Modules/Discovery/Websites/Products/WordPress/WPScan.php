@@ -93,19 +93,15 @@ class WPScan extends Module
      */
     public function run()
     {
-        if ($this->environment != 'local' || !Storage::exists($this->tmp)) {
-            $this->runProcess([
-                env('TOOLS_WPSCAN'), '--url', $this->model->url, '--no-update',
-                '--random-user-agent', '--disable-tls-checks', '--max-threads', self::MAX_THREADS,
-                '--enumerate', 'p,t',
-                '--format', 'json', '--output', storage_path('app/' . $this->tmp)
-            ]);
-        }
+        $this->runProcess([
+            env('TOOLS_WPSCAN'), '--url', $this->model->url, '--no-update',
+            '--random-user-agent', '--disable-tls-checks', '--max-threads', self::MAX_THREADS,
+            '--enumerate', 'p,t',
+            '--format', 'json', '--output', storage_path('app/' . $this->tmp)
+        ]);
 
         $output = Storage::get($this->tmp);
-        if ($this->environment != 'local') {
-            Storage::delete($this->tmp);
-        }
+        Storage::delete($this->tmp);
 
         $content = json_decode($output);
         if (!is_object($content) || empty($content)) {

@@ -76,13 +76,9 @@ class Masscan extends Module
      */
     public function run()
     {
-        if ($this->environment != 'local' || !Storage::exists($this->tmp)) {
-            $this->runProcess(['sudo', 'masscan', '--max-rate', self::MAX_RATE, '-p', self::PORTS, $this->model->ip, '-oX', storage_path('app/' . $this->tmp)]);
-        }
+        $this->runProcess(['sudo', 'masscan', '--max-rate', self::MAX_RATE, '-p', self::PORTS, $this->model->ip, '-oX', storage_path('app/' . $this->tmp)]);
         $content = Storage::get($this->tmp);
-        if ($this->environment != 'local') {
-            Storage::delete($this->tmp);
-        }
+        Storage::delete($this->tmp);
         $this->store($content);
         $this->showOutput();
     }

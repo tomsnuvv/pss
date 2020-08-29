@@ -61,17 +61,13 @@ class CommonCrawl extends Module
         $domain = parse_url($this->model->url, PHP_URL_HOST);
 
         $outputPath = $this->outputPath($domain);
-        if ($this->environment != 'local' || !Storage::exists($outputPath)) {
-            $this->runProcess(['python3', env('TOOLS_CC'), $domain, '-y', date('Y'), '-u', '-o', storage_path('app/' . $outputPath)]);
-        }
+        $this->runProcess(['python3', env('TOOLS_CC'), $domain, '-y', date('Y'), '-u', '-o', storage_path('app/' . $outputPath)]);
         if (!Storage::exists($outputPath)) {
             $this->setMessage('No results.');
             return;
         }
         $content = Storage::get($outputPath);
-        if ($this->environment != 'local') {
-            Storage::delete($outputPath);
-        }
+        Storage::delete($outputPath);
 
         $this->store($content);
         $this->showOutput();

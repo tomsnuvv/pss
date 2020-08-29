@@ -64,19 +64,15 @@ class OneForAll extends Module
      */
     public function run()
     {
-        if ($this->environment != 'local' || !Storage::exists($this->tmp)) {
-            try {
-                $this->runProcess(['sudo', 'python3.8', env('TOOLS_ONEFORALL'),
-                '--target', $this->model->name, '--dns', 'TRUE', '--format', 'json',
-                '--path', storage_path('app/' . $this->tmp), 'run']);
-            } catch (\Exception $e) {
-                // do nothing, as *sometimes* the process hangs out, but generates output
-            }
+        try {
+            $this->runProcess(['sudo', 'python3.8', env('TOOLS_ONEFORALL'),
+            '--target', $this->model->name, '--dns', 'TRUE', '--format', 'json',
+            '--path', storage_path('app/' . $this->tmp), 'run']);
+        } catch (\Exception $e) {
+            // do nothing, as *sometimes* the process hangs out, but generates output
         }
         $content = Storage::get($this->tmp);
-        if ($this->environment != 'local') {
-            Storage::delete($this->tmp);
-        }
+        Storage::delete($this->tmp);
         $this->store($content);
     }
 

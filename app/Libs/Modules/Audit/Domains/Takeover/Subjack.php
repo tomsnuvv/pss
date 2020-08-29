@@ -78,21 +78,19 @@ class Subjack extends Audit
      */
     public function run()
     {
-        if ($this->environment != 'local' || !Storage::exists($this->outputPath)) {
-            $command = [
-                env('TOOLS_SUBJACK'), '-a', '-ssl', '-timeout', self::TIMEOUT, '-w',
-                storage_path('app/'.$this->inputPath), '-o',
-                storage_path('app/'.$this->outputPath)
-            ];
+        $command = [
+            env('TOOLS_SUBJACK'), '-a', '-ssl', '-timeout', self::TIMEOUT, '-w',
+            storage_path('app/'.$this->inputPath), '-o',
+            storage_path('app/'.$this->outputPath)
+        ];
 
-            if (env('TOOLS_SUBJACK_CONFIG')) {
-                $command = array_merge($command, [
-                    '-c', env('TOOLS_SUBJACK_CONFIG'),
-                ]);
-            }
-
-            $this->runProcess($command);
+        if (env('TOOLS_SUBJACK_CONFIG')) {
+            $command = array_merge($command, [
+                '-c', env('TOOLS_SUBJACK_CONFIG'),
+            ]);
         }
+
+        $this->runProcess($command);
 
         Storage::delete($this->inputPath);
 
@@ -102,9 +100,7 @@ class Subjack extends Audit
         }
 
         $content = Storage::get($this->outputPath);
-        if ($this->environment != 'local') {
-            Storage::delete($this->outputPath);
-        }
+        Storage::delete($this->outputPath);
 
         $this->store($content);
     }

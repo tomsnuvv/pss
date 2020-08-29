@@ -41,24 +41,7 @@ class Certificate extends Module
      */
     public function run()
     {
-        try {
-            $data = $this->getCertificate();
-        } catch (Exception $e) {
-            if (strstr($e->getMessage(), 'timed out')) {
-                $this->setMessage('Connection timed out');
-                return;
-            }
-            if (strstr($e->getMessage(), 'Name or service not known')) {
-                $this->setMessage('Name or service not known');
-                return;
-            }
-            if (strstr($e->getMessage(), 'No address associated with hostname')) {
-                $this->setMessage('No address associated with hostname');
-                return;
-            }
-            throw $e;
-        }
-        
+        $data = $this->getCertificate();
         $this->store($data);
         $this->showOutput();
     }

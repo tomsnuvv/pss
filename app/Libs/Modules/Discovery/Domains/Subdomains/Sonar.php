@@ -71,15 +71,11 @@ class Sonar extends Module
     {
         $domain = str_replace('.', '\.', $this->model->name);
 
-        if ($this->environment != 'local' || !Storage::exists($this->tmp)) {
-            $this->runProcess([
-                'bash', env('TOOLS_SONAR_BIN'), env('TOOLS_SONAR_DATA'), $domain, storage_path('app/' . $this->tmp)
-            ]);
-        }
+        $this->runProcess([
+            'bash', env('TOOLS_SONAR_BIN'), env('TOOLS_SONAR_DATA'), $domain, storage_path('app/' . $this->tmp)
+        ]);
         $content = Storage::get($this->tmp);
-        if ($this->environment != 'local') {
-            Storage::delete($this->tmp);
-        }
+        Storage::delete($this->tmp);
         $this->store($content);
     }
 

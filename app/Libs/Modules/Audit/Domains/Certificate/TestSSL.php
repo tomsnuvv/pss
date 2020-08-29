@@ -88,13 +88,10 @@ class TestSSL extends Audit
      */
     public function run()
     {
-        if ($this->environment != 'local' || !Storage::exists($this->tmp)) {
-            $this->runProcess([env('TOOLS_TESTSSL'), '-p', '-U', '--mode', 'parallel', '--jsonfile', storage_path('app/' . $this->tmp), $this->model->name]);
-        }
+        $this->runProcess([env('TOOLS_TESTSSL'), '-p', '-U', '--mode', 'parallel', '--jsonfile', storage_path('app/' . $this->tmp), $this->model->name]);
+
         $content = Storage::get($this->tmp);
-        if ($this->environment != 'local') {
-            Storage::delete($this->tmp);
-        }
+        Storage::delete($this->tmp);
         $this->store($content);
     }
 
