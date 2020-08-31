@@ -130,11 +130,13 @@ class Certificate extends Module
         if (filter_var($hostname, FILTER_VALIDATE_IP)) {
             $host = Hosts::createServerFromIP($hostname);
             if ($host) {
+                $this->model->hosts()->syncWithoutDetaching([$host->id]);
                 $host->certificates()->syncWithoutDetaching([$certificate->id]);
             }
         } else {
             $domain = Domains::createDomain($hostname);
             if ($domain) {
+                $this->model->domains()->syncWithoutDetaching([$domain->id]);
                 $domain->certificate()->associate($certificate);
                 $domain->save();
             }

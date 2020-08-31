@@ -24,9 +24,11 @@ class CertificateTest extends TestCase
         parent::setUp();
 
         $this->artisan('db:seed');
+
+        $this->withoutEvents();
     }
 
-    public function testCertificateDomain()
+    public function testDomain()
     {
         $website = new Website(['url' => 'https://google.com']);
         $website->key = true;
@@ -38,10 +40,24 @@ class CertificateTest extends TestCase
 
         $domains = $website->domains;
         $this->assertCount(1, $domains);
-
         $certificate = $domains->first()->certificate;
         $this->assertIsInt($certificate->id);
         $this->assertEquals($certificate->subject_common_name, 'www.google.com');
+    }
+
+    public function testHost()
+    {
+        $website = new Website(['url' => 'https://1.1.1.1']);
+        $website->key = true;
+        $website->save();
+
+        (new Module($website))->execute();
+
+        $hosts = $website->hosts;
+        $this->assertCount(1, $hosts);
+        $certificates = $hosts->first()->certificates;
+        $this->assertCount(1, $certificates);
+        $this->assertEquals($certificates->first()->subject_common_name, 'cloudflare-dns.com');
     }
 
     public function testCantRunOnNonHttp()
