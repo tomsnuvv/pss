@@ -8,6 +8,8 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Libs\Modules\Discovery\Websites\Status as Module;
 use App\Models\Website;
 use App\Models\Project;
+use App\Models\ModuleLog;
+use App\Models\ModuleLogStatus;
 
 class StatusTest extends TestCase
 {
@@ -33,6 +35,9 @@ class StatusTest extends TestCase
         $website->save();
 
         (new Module($website))->execute();
+        $log = ModuleLog::all()->last();
+        $this->assertEquals($log->status_id, ModuleLogStatus::finished()->first()->id);
+
         $this->assertEquals($website->status, 200);
 
         $request = $website->requests()->first();

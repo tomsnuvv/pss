@@ -8,6 +8,8 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use App\Libs\Modules\Discovery\Websites\Host as Module;
 use App\Models\Website;
 use App\Models\Project;
+use App\Models\ModuleLog;
+use App\Models\ModuleLogStatus;
 
 class HostTest extends TestCase
 {
@@ -35,6 +37,8 @@ class HostTest extends TestCase
         $ip = gethostbyname('github.com');
 
         (new Module($website))->execute();
+        $log = ModuleLog::all()->last();
+        $this->assertEquals($log->status_id, ModuleLogStatus::finished()->first()->id);
 
         $hosts = $website->hosts;
         $this->assertCount(1, $hosts);
